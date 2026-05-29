@@ -166,36 +166,46 @@ function onResults(results) {
             smoothedRightIris.y = smoothedRightIris.y + SMOOTHING_FACTOR * (rawRightIris.y - smoothedRightIris.y);
         }
 
-        // 3. Draw Iris Dots
+        // 3. Blink Detection
+        const leftEAR = calculateEAR(landmarks, LEFT_EYE_LEFT, LEFT_EYE_RIGHT, LEFT_EYE_TOP, LEFT_EYE_BOTTOM);
+        const rightEAR = calculateEAR(landmarks, RIGHT_EYE_LEFT, RIGHT_EYE_RIGHT, RIGHT_EYE_TOP, RIGHT_EYE_BOTTOM);
+        const avgEAR = (leftEAR + rightEAR) / 2;
+        const blinkThreshold = 0.22; // Tune this threshold as needed
+
+        const leftEyeOpen = leftEAR >= blinkThreshold;
+        const rightEyeOpen = rightEAR >= blinkThreshold;
+
+        if (leftEyeOpen && rightEyeOpen) {
+            valBlink.innerText = "Open";
+            valBlink.style.color = "#FFFFFF";
+        } else if (!leftEyeOpen && !rightEyeOpen) {
+            valBlink.innerText = "Blink Detected";
+            valBlink.style.color = "#FF3B3B";
+        } else {
+            valBlink.innerText = leftEyeOpen ? "Right Wink" : "Left Wink";
+            valBlink.style.color = "#FF3B3B";
+        }
+
+        // 4. Draw Iris Dots
         canvasCtx.fillStyle = '#FF3B3B'; // Accent Color
         canvasCtx.shadowColor = '#FF3B3B';
         canvasCtx.shadowBlur = 10;
         
         // Left Eye
-        canvasCtx.beginPath();
-        canvasCtx.arc(smoothedLeftIris.x, smoothedLeftIris.y, 5, 0, 2 * Math.PI);
-        canvasCtx.fill();
+        if (leftEyeOpen) {
+            canvasCtx.beginPath();
+            canvasCtx.arc(smoothedLeftIris.x, smoothedLeftIris.y, 5, 0, 2 * Math.PI);
+            canvasCtx.fill();
+        }
 
         // Right Eye
-        canvasCtx.beginPath();
-        canvasCtx.arc(smoothedRightIris.x, smoothedRightIris.y, 5, 0, 2 * Math.PI);
-        canvasCtx.fill();
+        if (rightEyeOpen) {
+            canvasCtx.beginPath();
+            canvasCtx.arc(smoothedRightIris.x, smoothedRightIris.y, 5, 0, 2 * Math.PI);
+            canvasCtx.fill();
+        }
         
         canvasCtx.shadowBlur = 0; // Reset
-
-        // 4. Blink Detection
-        const leftEAR = calculateEAR(landmarks, LEFT_EYE_LEFT, LEFT_EYE_RIGHT, LEFT_EYE_TOP, LEFT_EYE_BOTTOM);
-        const rightEAR = calculateEAR(landmarks, RIGHT_EYE_LEFT, RIGHT_EYE_RIGHT, RIGHT_EYE_TOP, RIGHT_EYE_BOTTOM);
-        const avgEAR = (leftEAR + rightEAR) / 2;
-
-        const blinkThreshold = 0.22; // Tune this threshold as needed
-        if (avgEAR < blinkThreshold) {
-            valBlink.innerText = "Blink Detected";
-            valBlink.style.color = "#FF3B3B";
-        } else {
-            valBlink.innerText = "Open";
-            valBlink.style.color = "#FFFFFF";
-        }
 
         // 5. Gaze Direction
         const gaze = determineGaze(landmarks, smoothedLeftIris, LEFT_EYE_LEFT, LEFT_EYE_RIGHT, LEFT_EYE_TOP, LEFT_EYE_BOTTOM, width, height);
