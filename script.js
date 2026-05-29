@@ -11,15 +11,11 @@ const statusFace = document.getElementById('status-face');
 const statusTracking = document.getElementById('status-tracking');
 
 // Debug Panel Elements
-const valFps = document.getElementById('val-fps');
 const valGaze = document.getElementById('val-gaze');
 const valBlink = document.getElementById('val-blink');
 const valAccuracy = document.getElementById('val-accuracy');
 
 // State Variables
-let lastTime = 0;
-let frameCount = 0;
-let fps = 0;
 
 // Smoothing for Iris Centers (Exponential Moving Average)
 const SMOOTHING_FACTOR = 0.6;
@@ -127,16 +123,6 @@ function onResults(results) {
     if (!loadingOverlay.classList.contains('hidden')) {
         loadingOverlay.classList.add('hidden');
         updateStatus(statusTracking, true);
-    }
-
-    // Calculate FPS
-    const now = performance.now();
-    frameCount++;
-    if (now - lastTime >= 1000) {
-        fps = frameCount;
-        frameCount = 0;
-        lastTime = now;
-        valFps.innerText = fps;
     }
 
     canvasCtx.save();
@@ -263,6 +249,5 @@ async function startCamera() {
 
 // Start the application
 window.onload = () => {
-    lastTime = performance.now();
     startCamera();
 };
