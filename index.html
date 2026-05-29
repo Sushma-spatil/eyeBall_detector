@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Eye Tracker</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- MediaPipe Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Header -->
+        <header class="header">
+            <div class="title-container">
+                <div class="logo-dot"></div>
+                <h1>Real-Time Eye Tracker</h1>
+            </div>
+            <div class="status-indicators">
+                <div class="status-item" id="status-camera">
+                    <span class="indicator red"></span> Camera Active
+                </div>
+                <div class="status-item" id="status-face">
+                    <span class="indicator red"></span> Face Detected
+                </div>
+                <div class="status-item" id="status-tracking">
+                    <span class="indicator red"></span> Tracking Active
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Section -->
+        <main class="main-content">
+            <div class="tracking-container">
+                <!-- Loading State -->
+                <div class="loading-overlay" id="loading-overlay">
+                    <div class="spinner"></div>
+                    <p>Initializing Camera & Models...</p>
+                </div>
+
+                <!-- Video and Canvas -->
+                <video class="input_video" id="video" autoplay playsinline></video>
+                <canvas class="output_canvas" id="canvas" width="1280" height="720"></canvas>
+            </div>
+        </main>
+
+        <!-- Bottom Panel: Debug Cards -->
+        <footer class="bottom-panel">
+            <div class="card">
+                <div class="card-label">FPS</div>
+                <div class="card-value" id="val-fps">0</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Gaze Direction</div>
+                <div class="card-value highlight" id="val-gaze">Center</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Blink Status</div>
+                <div class="card-value" id="val-blink">Open</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Tracking Accuracy</div>
+                <div class="card-value" id="val-accuracy">--</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Application Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
