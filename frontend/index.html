@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Eye Tracker (WebGazer)</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Header -->
+        <header class="header">
+            <div class="title-container">
+                <div class="logo-dot"></div>
+                <h1>WebGazer Eye Tracker</h1>
+            </div>
+            <div class="status-indicators">
+                <div class="status-item" id="status-tracking">
+                    <span class="indicator red"></span> Tracking Active
+                </div>
+                <div class="status-item" id="status-calibration">
+                    <span class="indicator red"></span> Calibrated
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Section (Grid UI) -->
+        <main class="main-content">
+            <div class="ui-grid">
+                <button class="grid-button" data-target="home">Home</button>
+                <button class="grid-button" data-target="settings">Settings</button>
+                <button class="grid-button" data-target="profile">Profile</button>
+                <button class="grid-button" data-target="gallery">Gallery</button>
+                <button class="grid-button" data-target="about">About</button>
+                <button class="grid-button" data-target="contact">Contact</button>
+            </div>
+        </main>
+
+        <!-- Bottom Panel: Debug Cards -->
+        <footer class="bottom-panel">
+            <div class="card">
+                <div class="footer-status">
+                    <div class="status-item">WebGazer X: <span id="val-wg-x">0</span></div>
+                    <div class="status-item">WebGazer Y: <span id="val-wg-y">0</span></div>
+                    <div class="status-item" style="color: #00f2fe; font-weight: bold;">Cursor: <span id="val-coords">0, 0</span></div>
+                    <div class="status-item">EAR: <span id="val-ear">0.00</span></div>
+                </div>
+                <div class="footer-status" style="margin-top: 5px;">
+                    <div class="status-item">Hover: <span id="val-hovered">None</span></div>
+                    <div class="status-item">Source: <span id="val-source">WebGazer.js</span></div>
+                    <button id="btn-recalibrate" class="btn-primary" style="padding: 2px 8px; font-size: 0.8rem;">Restart Calibration</button>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Calibration Overlay -->
+        <div class="calibration-overlay" id="calibration-overlay">
+            <div class="calibration-content" id="calibration-content" style="pointer-events: none;">
+                <h2 id="calibration-title">WebGazer Calibration</h2>
+                <p id="calibration-instruction">Please click each of the 9 red dots 5 times while looking at them.</p>
+                
+                <div id="calibration-diagnostics" style="text-align: left; background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem;">
+                    <div style="margin-bottom: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;"><strong>Diagnostics</strong></div>
+                    <div>Points Completed: <span id="diag-points">0</span> / 9</div>
+                    <div style="margin-top: 0.5rem; font-size: 0.8rem; color: #888;">(Dots will turn green when fully clicked)</div>
+                </div>
+                
+                <button id="btn-start-calibration" class="btn-primary" style="pointer-events: auto;">Start Calibration</button>
+            </div>
+            <div id="calibration-dots-container" class="hidden"></div>
+        </div>
+
+        <!-- Demo Panels Container -->
+        <div class="panels-container hidden" id="panels-container">
+            <div class="demo-panel hidden" id="panel-home"><h2>Home</h2><p>Welcome to the home page. Gaze control is active.</p><button class="btn-close">Close</button></div>
+            <div class="demo-panel hidden" id="panel-settings"><h2>Settings</h2><p>Configure your gaze tracking preferences here.</p><button class="btn-close">Close</button></div>
+            <div class="demo-panel hidden" id="panel-profile"><h2>Profile</h2><p>View your user profile and stats.</p><button class="btn-close">Close</button></div>
+            <div class="demo-panel hidden" id="panel-gallery"><h2>Gallery</h2><p>Browse through your images with just a look.</p><button class="btn-close">Close</button></div>
+            <div class="demo-panel hidden" id="panel-about"><h2>About</h2><p>Learn more about this eye-tracking technology.</p><button class="btn-close">Close</button></div>
+            <div class="demo-panel hidden" id="panel-contact"><h2>Contact</h2><p>Get in touch with us using eye-controlled typing.</p><button class="btn-close">Close</button></div>
+        </div>
+
+        <!-- Custom Cursor -->
+        <div class="custom-cursor" id="custom-cursor"></div>
+    </div>
+
+    <!-- WebGazer.js -->
+    <script src="https://cdn.jsdelivr.net/npm/webgazer@3.3.0/dist/webgazer.min.js"></script>
+    
+    <!-- MediaPipe FaceMesh for Blink Detection -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
+    
+    <!-- Application Logic -->
+    <script src="script.js"></script>
+</body>
+</html>

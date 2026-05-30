@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+websockets
+opencv-python
+mediapipe
+scikit-learn
+filterpy
+numpy
